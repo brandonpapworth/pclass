@@ -1,0 +1,25 @@
+{
+  "name": "pclass",
+  "version": "0.0.1",
+  "description": "A Backbone-inspired, JavaScript \"Class\" system designed with performance in mind.",
+  "private": false,
+  "author": "Brandon Papworth <brandon@papworth.me>",
+  "main": "lib/pclass.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brandonpapworth/pclass"
+  },
+  "bugs": {
+    "url": "https://github.com/brandonpapworth/pclass/issues"
+  },
+  "keywords": [
+    "class",
+    "inherit",
+    "inheritance",
+    "prototype",
+    "extend"
+  ],
+  "dependencies": {},
+  "devDependencies": {},
+  "license": "MIT"
+}
