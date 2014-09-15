@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PClass Test | Script Tag</title>
+  <meta charset="utf-8">
+
+  <style>
+    .text__success {
+      color: #0F0;
+    }
+
+    .text__fail {
+      color: #F00;
+    }
+  </style>
+</head>
+<body>
+  <p>Did the library load? <span id="libDidLoad"></span></p>
+  <p>Did the library extend a class? <span id="didExtendClass"></span></p>
+
+  <script src="../../lib/pclass.js"></script>
+  <script>
+    ;(function(){
+      var libDidLoadElem = document.getElementById('libDidLoad');
+      if (typeof window.PClass === 'function') {
+        libDidLoadElem.innerHTML = 'yes!';
+        libDidLoadElem.className = 'text__success';
+      } else {
+        libDidLoadElem.innerHTML = 'no!';
+        libDidLoadElem.className = 'text__fail';
+      }
+
+      var didExtendClassElem = document.getElementById('didExtendClass');
+      var ExtendedClass;
+      var err;
+      try {
+        ExtendedClass = PClass.extend({
+          constructor : function (classInstance, opts) {
+            console.group('ExtendedClass | Constructor');
+            classInstance.foo = 'bar';
+            classInstance.bar = 'baz';
+            console.log('ExtendedClass result:', classInstance);
+            console.groupEnd('ExtendedClass | Constructor');
+          },
+          protoProps : {
+            foo : 'ExtendedClass-default',
+            bar : 'ExtendedClass-default'
+          },
+          staticProps : {
+            someProp : 'from ExtendedClass'
+          }
+        });
+      } catch (caughtErr) {
+        err = caughtErr;
+      }
+      if (!err) {
+        didExtendClassElem.innerHTML = 'yes!';
+        didExtendClassElem.className = 'text__success';
+        console.log('ExtendedClass:', ExtendedClass);
+      } else {
+        didExtendClassElem.innerHTML = 'no!';
+        didExtendClassElem.className = 'text__fail';
+        console.error('Error extending:', err,'\n',err.stack);
+      }
+
+      console.group('extClassInstance | Instantiating');
+      var extClassInstance = new ExtendedClass({
+        herp : 'derp'
+      });
+      console.groupEnd('extClassInstance | Instantiating');
+      console.log('extClassInstance:', extClassInstance);
+
+      var AnotherClass;
+      err = null;
+      try {
+        AnotherClass = ExtendedClass.extend({
+          constructor : function (classInstance, opts) {
+            console.group('AnotherClass | Constructor');
+            classInstance.foo = 'bar2';
+            classInstance.baz = 'what';
+            console.groupEnd('AnotherClass | Constructor');
+          },
+          protoProps : {
+            foo : 'AnotherClass-default',
+            bar : 'AnotherClass-default'
+          },
+          staticProps : {
+            anotherProp : 'from AnotherClass'
+          }
+        });
+      } catch (caughtErr) {
+        err = caughtErr;
+      }
+
+      if (err) {
+        console.error('Error extending ExtendedClass for AnotherClass:',err,'\n',err.stack);
+      }
+
+      console.group('anotherClassInstance | Instantiating');
+      var anotherClassInstance = new AnotherClass({
+        herp : 'narf'
+      });
+      console.groupEnd('anotherClassInstance | Instantiating');
+      console.log('anotherClassInstance:', anotherClassInstance);
+
+
+    })();
+  </script>
+</body>
+</html>
